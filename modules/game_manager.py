@@ -2,9 +2,6 @@ import os
 import sys
 import numpy as np
 
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(parent_dir)
-
 import modules.state_modules.state_manager as state_manager
 from modules.oracle import Poker_Oracle
 from  modules.players import Player, User, AI
@@ -170,6 +167,7 @@ class Game_Manager:
             self.state.all_in_players.keys()
         )
         print(f"the showdown players are {current_players}")
+        
         strongest_hand = min(
             Poker_Oracle.hand_strength(self.table, player.hand)
             for player in self.players

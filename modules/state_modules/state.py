@@ -3,9 +3,6 @@ import sys
 import numpy as np
 import copy
 
-parent_parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append(parent_parent_dir)
-
 import config
 
 class State:

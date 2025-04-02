@@ -2,9 +2,6 @@ import os
 import sys
 import numpy as np
 
-parent_parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append(parent_parent_dir)
-
 from modules.state_modules.state import State
 
 import config

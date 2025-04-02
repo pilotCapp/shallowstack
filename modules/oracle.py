@@ -8,18 +8,28 @@ from phevaluator.evaluator import evaluate_cards
 import sys
 import os
 
-# Get the parent directory of the current directory (i.e., the directory containing the main file)
-parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# Add the parent directory to the Python path
-sys.path.append(parent_dir)
-
 import config
 
 
 class Poker_Oracle:
 
+    @staticmethod
+    def int_to_card(i):
+        """
+        Convert an integer (0-23) to a card string.
+        The deck is assumed to contain 24 cards:
+        - 6 ranks: "2", "4", "6", "9", "Q", "K"
+        - 4 suits: "c", "d", "h", "s"
+        Mapping: card = ranks[i // 4] + suits[i % 4]
+        """
+        ranks = ["2", "4", "6", "9", "Q", "K"]
+        suits = ["c", "d", "h", "s"]
+        if not 0 <= i < len(ranks) * len(suits):
+            raise ValueError("Integer must be in the range 0 to 23")
+        return ranks[i // 4] + suits[i % 4]
+
     def create_deck(self):
-        self.deck = np.arange(0, config.deck_size)
+        self.deck = np.arange(0, config.deck_size, dtype=int)
 
     def shuffle_deck(self):
         np.random.shuffle(self.deck)
@@ -39,7 +49,7 @@ class Poker_Oracle:
             self.deck = np.delete(self.deck, np.where(self.deck == card))
 
     def __init__(self):
-        self.deck = np.array([])
+        self.deck = np.array([], dtype=int)
         self.create_deck()
         self.shuffle_deck()
 
@@ -243,8 +253,8 @@ class Poker_Oracle:
         return sheet
 
     def hand_strength(table, hole): #new hand strength function that uses the phevaluator library, much more efficient
-        np_cards = np.append(table, hole)
-        cards = [int(card) for card in np_cards]
+        np_cards = np.append(table, hole).astype(np.int8)
+        cards = [Poker_Oracle.int_to_card(card) for card in np_cards]
         hand_strength = evaluate_cards(*cards)
         return hand_strength
 

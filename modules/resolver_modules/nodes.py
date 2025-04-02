@@ -2,8 +2,6 @@ import numpy as np
 import os
 import sys
 
-parent_parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append(parent_parent_dir)
 
 from  modules.state_modules.state_manager import State_Manager
 

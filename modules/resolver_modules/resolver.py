@@ -3,10 +3,6 @@ import os
 import sys
 import copy
 
-parent_parent_dir = os.path.dirname(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-)
-sys.path.append(parent_parent_dir)
 
 from modules.oracle import Poker_Oracle
 from modules.NN_modules.nn_manager import NN_manager
@@ -139,14 +135,16 @@ class Resolver:
             )
 
         elif ( #if the node is a leaf node and not showdown, using meural network to calculate the evaluations
-            3
+            0
             <= node.state.table.size
             <= 5
             and node.leaf_node
         ):
-            node.v1, node.v2 = self.NN_manager.predict(
+            v1_tensor, v2_tensor = self.NN_manager.predict(
                 node.R1, node.R2, node.state.table, node.state.pot
             )
+            node.v1, node.v2 = v1_tensor.numpy(), v2_tensor.numpy()
+
         else: #if the node is not a leaf node calculate based on children
             v1_children = np.zeros((config.deck_size, config.deck_size))
             v2_children = np.zeros((config.deck_size, config.deck_size))
